@@ -56,8 +56,8 @@ if [[ $iptable_mangle_exit_code == 0 ]]; then
 
 	echo "[info] iptable_mangle support detected, adding fwmark for tables" | ts '%Y-%m-%d %H:%M:%.S'
 
-	# setup route for deluge webui using set-mark to route traffic for port 8080 to eth0
-	echo "8080    webui" >> /etc/iproute2/rt_tables
+	# setup route for deluge webui using set-mark to route traffic for port 8990 to eth0
+	echo "8990    webui" >> /etc/iproute2/rt_tables
 	ip rule add fwmark 1 table webui
 	ip route add default via $DEFAULT_GATEWAY table webui
 
@@ -103,9 +103,9 @@ iptables -A INPUT -s "${docker_network_cidr}" -d "${docker_network_cidr}" -j ACC
 # accept input to vpn gateway
 iptables -A INPUT -i eth0 -p $VPN_PROTOCOL --sport $VPN_PORT -j ACCEPT
 
-# accept input to deluge webui port 8080
-iptables -A INPUT -i eth0 -p tcp --dport 8080 -j ACCEPT
-iptables -A INPUT -i eth0 -p tcp --sport 8080 -j ACCEPT
+# accept input to deluge webui port 8990
+iptables -A INPUT -i eth0 -p tcp --dport 8990 -j ACCEPT
+iptables -A INPUT -i eth0 -p tcp --sport 8990 -j ACCEPT
 
 # process lan networks in the list
 for lan_network_item in "${lan_network_list[@]}"; do
@@ -146,14 +146,14 @@ iptables -A OUTPUT -o eth0 -p $VPN_PROTOCOL --dport $VPN_PORT -j ACCEPT
 if [[ $iptable_mangle_exit_code == 0 ]]; then
 
 	# accept output from deluge webui port 8112 - used for external access
-	iptables -t mangle -A OUTPUT -p tcp --dport 8080 -j MARK --set-mark 1
-	iptables -t mangle -A OUTPUT -p tcp --sport 8080 -j MARK --set-mark 1
+	iptables -t mangle -A OUTPUT -p tcp --dport 8990 -j MARK --set-mark 1
+	iptables -t mangle -A OUTPUT -p tcp --sport 8990 -j MARK --set-mark 1
 
 fi
 
 # accept output from deluge webui port 8112 - used for lan access
-iptables -A OUTPUT -o eth0 -p tcp --dport 8080 -j ACCEPT
-iptables -A OUTPUT -o eth0 -p tcp --sport 8080 -j ACCEPT
+iptables -A OUTPUT -o eth0 -p tcp --dport 8990 -j ACCEPT
+iptables -A OUTPUT -o eth0 -p tcp --sport 8990 -j ACCEPT
 
 # process lan networks in the list
 for lan_network_item in "${lan_network_list[@]}"; do
