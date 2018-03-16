@@ -30,7 +30,7 @@ $ docker run --privileged  -d \
               -p 8990:8990 \
               -p 8999:8999 \
               -p 8999:8999/udp \
-#              markusmcnugen/qbittorrentvpn
+              pendo/qbittorrentvpn
 ```
 
 # Variables
