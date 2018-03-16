@@ -3,14 +3,14 @@
 # Version 1.8
 
 FROM ubuntu:18.04
-MAINTAINER MarkusMcNugen
+MAINTAINER pendo 
 
 VOLUME /downloads
 VOLUME /config
 
 ENV DEBIAN_FRONTEND noninteractive
 
-RUN usermod -u 99 nobody
+RUN usermod -u 99 nobody 
 
 # Update packages and install software
 RUN apt-get update \
